@@ -1,5 +1,19 @@
 npx tailwindcss -o public/css/output.css
 php artisan qrcode:generate-daily
+
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+
+
+php artisan config:cache
+php artisan config:clear
+php artisan view:clear
+php artisan cache:clear
+
+sudo systemctl restart ufw apache2 mysql ssh
+
+
 php artisan schedule:list
 https://ckeditor.com/docs/ckeditor5/latest/updating/nim-migration/migration-to-new-installation-methods.html
 git pull origin main --rebase
@@ -37,11 +51,10 @@ sudo mysql_secure_installation
 sudo systemctl start mysql
 sudo systemctl enable MySQL
 
-sudo apt install gh -y
 sudo apt install -y software-properties-common
 sudo add-apt-repository -y ppa:ondrej/php
 sudo apt install -y php8.2 
-sudo apt install php8.2-curl php8.2-dom php8.2-mbstring php8.2-xml php8.2-mysql zip unzip
+sudo apt install php8.2-curl php8.2-gd php8.2-dom php8.2-mbstring php8.2-xml php8.2-mysql zip unzip
 
 sudo apt install phpmyadmin -y
 sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
@@ -76,7 +89,9 @@ curl -sS https://getcomposer.org/installer | sudo php
 sudo mv composer.phar composer
 composer
 
-sudo apt install php8.2-gd -y
+sudo apt install gh -y
+gh auth login
+
 https://codewithsusan.com/notes/deploy-laravel-on-apache
 git clone git@github.com:alecshelembe/finetrades.register.git
 cd demo
@@ -86,8 +101,6 @@ composer install --optimize-autoloader --no-dev
 
 cp .env.example .env
 php artisan key:generate
-
-php artisan storage:link
 
 <Directory /var/www/thestreetking/public>
         Options Indexes FollowSymLinks MultiViews
