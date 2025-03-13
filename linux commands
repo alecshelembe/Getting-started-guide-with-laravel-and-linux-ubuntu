@@ -1,5 +1,8 @@
 npx tailwindcss -o public/css/output.css
 php artisan qrcode:generate-daily
+php artisan storage:link
+git clone -b <branch-name> <repo-url>
+
 
 cp .env.example .env
 php artisan key:generate
@@ -112,11 +115,11 @@ git clone git@github.com:alecshelembe/finetrades.register.git
 cp .env.example .env
 php artisan key:generate
 
-<Directory /var/www/thestreetking/public>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride All
-        Require all granted
-    </Directory>
+<Directory /var/www/package/public>
+     Options Indexes FollowSymLinks MultiViews
+     AllowOverride All
+     Require all granted
+</Directory>
 
 sudo apt install certbot python3-certbot-apache -y
 sudo certbot --apache
