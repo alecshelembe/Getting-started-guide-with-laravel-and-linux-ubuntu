@@ -4,6 +4,9 @@ php artisan qrcode:generate-daily
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+chown -R www-data storage
+chown -R www-data bootstrap/cache
+composer install --optimize-autoloader --no-dev
 
 
 php artisan config:cache
@@ -37,6 +40,7 @@ sudo systemctl enable ssh
 sudo ufw status
 sudo systemctl restart ssh
 sudo ufw enable
+sudo apt update
 
 sudo apt install apache2 -y
 sudo ufw allow 'Apache'
@@ -44,7 +48,10 @@ sudo ufw allow 'Apache Full'
 sudo tail -f /var/log/apache2/error.log
 
 create user 'alec'@'localhost' identified by '1!Alec123';
+create database api;
 GRANT ALL PRIVILEGES ON api.* TO 'alec'@'localhost';
+flush privileges;
+exit;
 
 sudo apt install mysql-server -y
 sudo mysql_secure_installation
@@ -53,8 +60,16 @@ sudo systemctl enable MySQL
 
 sudo apt install -y software-properties-common
 sudo add-apt-repository -y ppa:ondrej/php
-sudo apt install -y php8.2 
+sudo apt install -y php8.2  
 sudo apt install php8.2-curl php8.2-gd php8.2-dom php8.2-mbstring php8.2-xml php8.2-mysql zip unzip
+sudo update-alternatives --set php /usr/bin/php8.2
+
+
+sudo apt install php8.2-gd
+php -m | grep -E 'gd|dom'
+sudo apt update
+sudo apt install php-gd php-xml -y
+
 
 sudo apt install phpmyadmin -y
 sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
@@ -94,11 +109,6 @@ gh auth login
 
 https://codewithsusan.com/notes/deploy-laravel-on-apache
 git clone git@github.com:alecshelembe/finetrades.register.git
-cd demo
-chown -R www-data storage
-chown -R www-data bootstrap/cache
-composer install --optimize-autoloader --no-dev
-
 cp .env.example .env
 php artisan key:generate
 
