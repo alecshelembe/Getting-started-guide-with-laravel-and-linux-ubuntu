@@ -1,13 +1,16 @@
 npx tailwindcss -o public/css/output.css
 php artisan qrcode:generate-daily
 php artisan storage:link
-git clone -b <branch-name> <repo-url>
+git clone -b Google-auth https://github.com/alecshelembe/thestreetking.git
+sudo tail -f /var/log/apache2/error.log
+
 
 
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
 chown -R www-data storage
+php artisan storage:link
 chown -R www-data bootstrap/cache
 composer install --optimize-autoloader --no-dev
 
@@ -48,7 +51,6 @@ sudo apt update
 sudo apt install apache2 -y
 sudo ufw allow 'Apache'
 sudo ufw allow 'Apache Full'
-sudo tail -f /var/log/apache2/error.log
 
 create user 'alec'@'localhost' identified by '1!Alec123';
 create database api;
@@ -123,6 +125,7 @@ php artisan key:generate
 
 sudo apt install certbot python3-certbot-apache -y
 sudo certbot --apache
+certbot install --cert-name investec-developer-project-repo.visitmyjoburg.co.za
 
 sudo nano /etc/apache2/ports.conf
 sudo ufw status verbose
