@@ -16,7 +16,9 @@ LAMP Stack with laravel full linux installation guide
 ---
 Step 1: Install and connect to your machine using ssh be sure to create or upload your id_rsa.pub file and add it to autherized_keys
 --
-/etc/ssh/sshd_config
+
+sudo apt update
+
 sudo apt install openssh-server -y
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
@@ -28,7 +30,8 @@ sudo systemctl enable ssh
 sudo ufw status
 sudo systemctl restart ssh
 sudo ufw enable
-sudo apt update
+
+/etc/ssh/sshd_config
 
 ---
 Step 2: Install apache to deliver your website 
@@ -45,19 +48,15 @@ sudo mysql_secure_installation
 sudo systemctl start mysql
 sudo systemctl enable MySQL
 
-create user 'alec'@'localhost' identified by '1!Alec123';
-create database api;
-GRANT ALL PRIVILEGES ON api.* TO 'alec'@'localhost';
+create user 'daxshbsnpp'@'localhost' identified by '1!Platform123';
+create database wordpress;
+GRANT ALL PRIVILEGES ON platform.* TO 'platform'@'localhost';
 flush privileges;
 exit;
 
 ---
 Step 4: Install php and relevent extentions for laravel
 --
-sudo apt install -y software-properties-common
-sudo add-apt-repository -y ppa:ondrej/php
-sudo apt install -y php8.2  
-sudo apt install php8.2-curl php8.2-gd php8.2-dom php8.2-mbstring php8.2-xml php8.2-mysql zip unzip
 sudo update-alternatives --set php /usr/bin/php8.2
 
 sudo apt install php8.2-gd
@@ -71,6 +70,16 @@ Step 5: Install phpmyadmin to better navigate your database (remove for producti
 sudo apt install phpmyadmin -y
 sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 sudo a2enconf phpmyadmin
+
+
+sudo dpkg --configure -a
+
+sudo apt purge phpmyadmin -y
+sudo apt autoremove --purge -y
+sudo rm -rf /etc/phpmyadmin
+sudo rm -rf /usr/share/phpmyadmin
+sudo rm -f /etc/apache2/conf-available/phpmyadmin.conf
+
 
 ---
 Step 6: Install the latest nodejs version to your machine, update your source packages
@@ -89,12 +98,23 @@ Another step: If your installing wordpress to your machine
 mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 sudo a2enmod rewrite
 wget https://wordpress.org/latest.zip
-sudo chown -R www-data:www-data /var/www/html/wordpress
-cd /var/www/html/wordpress
+sudo install unzip
+sudo chown -R www-data:www-data /var/www/wordpress
+cd /var/www/wordpress
 find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;`
+find . -type f -exec chmod 644 {} \;
 chmod 600 wp-config.php
-sudo chown -R www-data:www-data /var/www/html/wordpress
+sudo chown -R www-data:www-data /var/www/wordpress
+
+memory_limit=256M
+upload_max_filesize=64M
+post_max_size=64M
+max_execution_time=300
+max_input_vars=2000
+max_input_time=1000
+
+1. starter templates
+2. pro-elements
 
 ---
 Step 7: Install php composer the package manager for php  
@@ -117,7 +137,7 @@ gh auth login
 ---
 Another step: when creating your .conf file under /etc/apache/sites-enabled be sure to give url permissions like below
 --
-<Directory /var/www/package/public>
+<Directory /var/www/worpress>
      Options Indexes FollowSymLinks MultiViews
      AllowOverride All
      Require all granted
@@ -158,13 +178,17 @@ php artisan route:list
 ---
 mysql commands
 --
-CREATE USER 'external'@'localhost' IDENTIFIED BY '1!External123';
-GRANT SELECT, INSERT, UPDATE, DELETE ON your_database.* TO 'external'@'localhost';
+CREATE USER 'theadminuser'@'localhost' IDENTIFIED BY '1!Theadminuser123';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'theadminuser'@'localhost';
 FLUSH PRIVILEGES;
 SHOW GRANTS FOR 'external'@'localhost';
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'external'@'localhost';
+sudo ufw allow 3306/tcp
 sudo ufw reload
 GRANT INSERT ON api.social_posts TO 'external'@'localhost';
+sudo apt update && sudo apt install net-tools -y
+mysqladmin -h 34.35.77.194 -u external -p ping
+
 
 
 --------------
@@ -172,12 +196,16 @@ ssh-keygen -t ed25519 -C "alecshelembe@gmail.com"
 sudo apt install espeak
 
 npx tailwindcss -o public/css/output.css
-php artisan qrcode:generate-daily
-php artisan storage:link
-git clone -b Google-auth https://github.com/alecshelembe/thestreetking.git
-https://github.com/alecshelembe/licence.git
-sudo tail -f /var/log/apache2/error.log
 
 curl -X GET "https://thevapeokes.com/wp-json/visitmyjoburg/v1/info?key=https://visitmyjoburg.co.za';
     $secret_key = '1qazsw34edc" \
      -H "Origin: https://visitmyjoburg.co.za"
+
+
+---------------
+Android studio and react native
+---------------
+npx expo start --no-dev --minify 
+npx expo start --tunnel
+expo prebuild
+expo run:android
