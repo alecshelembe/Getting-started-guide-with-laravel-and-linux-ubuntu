@@ -1,14 +1,36 @@
+---
+error
+/var/log/apache2/error.log
+ls -la
+---
+
+---
+Set timezone
+---
+sudo timedatectl set-timezone Africa/Johannesburg
+timedatectl 
+---
+Set up cron jobs
+---
+sudo apt update
+sudo apt install cron
+sudo systemctl enable cron
+sudo systemctl start cron
+crontab -e
+
+* * * * * cd /var/www/iampromoter && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
+
 
 ---
 Laravel start-up commands
 --
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
 chown -R www-data storage
 chown -R www-data bootstrap/cache
-composer install --optimize-autoloader --no-dev
+cp .env.example .env
 php artisan storage:link
+php artisan key:generate
+php artisan migrate
+composer install --optimize-autoloader --no-dev
 
 
 LAMP Stack with laravel full linux installation guide
@@ -31,6 +53,7 @@ sudo ufw status
 sudo systemctl restart ssh
 sudo ufw enable
 
+(Set pubkey authentication = yes)
 /etc/ssh/sshd_config
 
 ---
@@ -48,15 +71,21 @@ sudo mysql_secure_installation
 sudo systemctl start mysql
 sudo systemctl enable MySQL
 
-create user 'daxshbsnpp'@'localhost' identified by '1!Platform123';
-create database wordpress;
-GRANT ALL PRIVILEGES ON platform.* TO 'platform'@'localhost';
+create user 'atamela'@'localhost' identified by '1!Atamela123';
+create database atamela;
+GRANT ALL PRIVILEGES ON atamela.* TO 'atamela'@'localhost';
 flush privileges;
 exit;
 
 ---
 Step 4: Install php and relevent extentions for laravel
 --
+
+sudo apt update
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:ondrej/php -y
+sudo apt install php8.2 php8.2-cli php8.2-common php8.2-gd php8.2-mbstring php8.2-xml php8.2-curl php8.2-mysql php8.2-zip php8.2-bcmath php8.2-soap php8.2-readline php8.2-intl php8.2-tokenizer php8.2-fileinfo -y
+
 sudo update-alternatives --set php /usr/bin/php8.2
 
 sudo apt install php8.2-gd
@@ -99,12 +128,12 @@ mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-confi
 sudo a2enmod rewrite
 wget https://wordpress.org/latest.zip
 sudo install unzip
-sudo chown -R www-data:www-data /var/www/wordpress
-cd /var/www/wordpress
+sudo chown -R www-data:www-data /var/www/package
+cd /var/www/package
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 chmod 600 wp-config.php
-sudo chown -R www-data:www-data /var/www/wordpress
+sudo chown -R www-data:www-data /var/www/package
 
 memory_limit=256M
 upload_max_filesize=64M
@@ -131,6 +160,7 @@ composer
 ---
 step 8: Install and authenticate with GitHub
 --
+sudo api install git
 sudo apt install gh -y
 gh auth login
 
@@ -148,7 +178,6 @@ step 9: Install certbot for you lets encrypt ssl certificates
 --
 sudo apt install certbot python3-certbot-apache -y
 sudo certbot --apache
-certbot install --cert-name investec-developer-project-repo.visitmyjoburg.co.za
 
 ---
 If your running on a different port
@@ -178,6 +207,8 @@ php artisan route:list
 ---
 mysql commands
 --
+SELECT User, Host FROM mysql.user;
+
 CREATE USER 'theadminuser'@'localhost' IDENTIFIED BY '1!Theadminuser123';
 GRANT ALL PRIVILEGES ON wordpress.* TO 'theadminuser'@'localhost';
 FLUSH PRIVILEGES;
