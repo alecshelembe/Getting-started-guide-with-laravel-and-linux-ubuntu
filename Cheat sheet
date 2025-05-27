@@ -10,14 +10,15 @@ Set timezone
 sudo timedatectl set-timezone Africa/Johannesburg
 timedatectl 
 ---
+
 Set up cron jobs
 ---
 sudo apt update
 sudo apt install cron
 sudo systemctl enable cron
 sudo systemctl start cron
-crontab -e
 
+crontab -e
 * * * * * cd /var/www/iampromoter && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
 
 
@@ -71,9 +72,9 @@ sudo mysql_secure_installation
 sudo systemctl start mysql
 sudo systemctl enable MySQL
 
-create user 'atamela'@'localhost' identified by '1!Atamela123';
-create database atamela;
-GRANT ALL PRIVILEGES ON atamela.* TO 'atamela'@'localhost';
+create user 'zurewholesale'@'localhost' identified by '1!Zurewholesale123';
+create database zurewholesale;
+GRANT ALL PRIVILEGES ON zurewholesale.* TO 'zurewholesale'@'localhost';
 flush privileges;
 exit;
 
@@ -84,14 +85,11 @@ Step 4: Install php and relevent extentions for laravel
 sudo apt update
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:ondrej/php -y
-sudo apt install php8.2 php8.2-cli php8.2-common php8.2-gd php8.2-mbstring php8.2-xml php8.2-curl php8.2-mysql php8.2-zip php8.2-bcmath php8.2-soap php8.2-readline php8.2-intl php8.2-tokenizer php8.2-fileinfo -y
+sudo apt install php8.2 php8.2-cli php8.2-common php8.2-gd php8.2-mbstring php8.2-xml php8.2-curl php8.2-mysql php8.2-gd php8.2-zip php8.2-bcmath php8.2-soap php8.2-readline php8.2-intl php8.2-tokenizer php8.2-fileinfo -y
 
 sudo update-alternatives --set php /usr/bin/php8.2
 
-sudo apt install php8.2-gd
 php -m | grep -E 'gd|dom'
-sudo apt update
-sudo apt install php-gd php-xml -y
 
 ---
 Step 5: Install phpmyadmin to better navigate your database (remove for production)
@@ -109,9 +107,22 @@ sudo rm -rf /etc/phpmyadmin
 sudo rm -rf /usr/share/phpmyadmin
 sudo rm -f /etc/apache2/conf-available/phpmyadmin.conf
 
+---
+Step 6: Install php composer the package manager for php  
+--
+
+php -m
+sudo a2enmod rewrite
+sudo service apache2 restart
+cd /usr/bin
+curl -sS https://getcomposer.org/installer | sudo php
+sudo mv composer.phar composer
+composer
+
+sudo update-alternatives --set php /usr/bin/php8.2
 
 ---
-Step 6: Install the latest nodejs version to your machine, update your source packages
+Step : Install the latest nodejs version to your machine, update your source packages
 --
 sudo apt remove nodejs npm
 sudo apt clean
@@ -145,17 +156,6 @@ max_input_time=1000
 1. starter templates
 2. pro-elements
 
----
-Step 7: Install php composer the package manager for php  
---
-
-php -m
-sudo a2enmod rewrite
-sudo service apache2 restart
-cd /usr/bin
-curl -sS https://getcomposer.org/installer | sudo php
-sudo mv composer.phar composer
-composer
 
 ---
 step 8: Install and authenticate with GitHub
