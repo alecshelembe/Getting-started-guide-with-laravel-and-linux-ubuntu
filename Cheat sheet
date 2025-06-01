@@ -4,6 +4,26 @@ error
 ls -la
 ---
 
+curl -X GET "https://visitmyjoburg.co.za/api/get-social-posts"   -H "Accept: application/json"
+
+keytool -genkeypair -v -storetype PKCS12 -keystore chris-nails-key.keystore -alias zure-wholesale-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
+
+https://gemini.google.com/app/bb137b00fbff8798?hl=en-IN
+
+mysql -u root -p wordpress < /var/www/thevapeo_wordress_all.sql
+wp search-replace 'https://thevapeokes.com' 'https://thevapeokes.visitmyjoburg.co.za' --skip-columns=guid
+
+wp maintenance-mode deactivate --allow-root
+wp maintenance-mode activate --allow-root
+
+
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+php wp-cli.phar --info
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+ 
+
 ---
 Set timezone
 ---
@@ -57,6 +77,7 @@ sudo ufw enable
 (Set pubkey authentication = yes)
 /etc/ssh/sshd_config
 
+rm ~/.ssh/known_hosts
 ---
 Step 2: Install apache to deliver your website 
 ---
@@ -72,9 +93,9 @@ sudo mysql_secure_installation
 sudo systemctl start mysql
 sudo systemctl enable MySQL
 
-create user 'zurewholesale'@'localhost' identified by '1!Zurewholesale123';
-create database zurewholesale;
-GRANT ALL PRIVILEGES ON zurewholesale.* TO 'zurewholesale'@'localhost';
+create user 'api'@'localhost' identified by '1!Api123';
+create database api;
+GRANT ALL PRIVILEGES ON api.* TO 'api'@'localhost';
 flush privileges;
 exit;
 
@@ -135,16 +156,20 @@ sudo apt install npm
 ---
 Another step: If your installing wordpress to your machine 
 --
-mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+
 sudo a2enmod rewrite
 wget https://wordpress.org/latest.zip
 sudo install unzip
-sudo chown -R www-data:www-data /var/www/package
-cd /var/www/package
+
+sudo chown -R www-data:www-data /var/www/wordpress
+cd /var/www/wordpress
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
-chmod 600 wp-config.php
-sudo chown -R www-data:www-data /var/www/package
+chmod 600 wp-config-sample.php
+sudo chown -R www-data:www-data /var/www/wordpress
+
+mv /var/www/wordpress/wp-config-sample.php /var/www/wordpress/wp-config.php
+
 
 memory_limit=256M
 upload_max_filesize=64M
@@ -160,14 +185,14 @@ max_input_time=1000
 ---
 step 8: Install and authenticate with GitHub
 --
-sudo api install git
+sudo apt install git
 sudo apt install gh -y
 gh auth login
 
 ---
 Another step: when creating your .conf file under /etc/apache/sites-enabled be sure to give url permissions like below
 --
-<Directory /var/www/worpress>
+<Directory /var/www/wordpress>
      Options Indexes FollowSymLinks MultiViews
      AllowOverride All
      Require all granted
